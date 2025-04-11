@@ -25,11 +25,11 @@ internal class SubMenuSelectedEventArgs : EventArgs
 
 internal class ContextMenuItemView : LinearLayout
 {
-    Context _context;
-    TextView _text;
-    Android.Content.Res.ColorStateList _defaultTintList;
-    ImageView _image;
-    AView _divider;
+    private Context _context;
+    private TextView _text;
+    private Android.Content.Res.ColorStateList _defaultTintList;
+    private ImageView _image;
+    private AView _divider;
 
     public ContextMenuItemView(Context context) : base(context)
     {
@@ -37,20 +37,20 @@ internal class ContextMenuItemView : LinearLayout
         Setup();
     }
 
-    void Setup()
+    private void Setup()
     {
 
         var outValue = new TypedValue();
         _context.Theme.ResolveAttribute(Resource.Attribute.selectableItemBackground, outValue, true);
         Orientation = Orientation.Vertical;
-        LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
+        LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
 
         _divider = new ImageView(_context)
         {
             Background = _context.Resources.GetDrawable(Android.Resource.Drawable.DividerHorizontalBright),
         };
 
-        AddView(_divider, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, ViewUtils.DpToPx(1))
+        AddView(_divider, new LayoutParams(LayoutParams.MatchParent, ViewUtils.DpToPx(1))
         {
             TopMargin = ViewUtils.DpToPx(4),
             BottomMargin = ViewUtils.DpToPx(4),
@@ -58,7 +58,7 @@ internal class ContextMenuItemView : LinearLayout
 
         var layout = new LinearLayout(_context)
         {
-            LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent),
+            LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent),
             Orientation = Orientation.Horizontal,
             Foreground = _context.GetDrawable(outValue.ResourceId)
         };
@@ -68,7 +68,7 @@ internal class ContextMenuItemView : LinearLayout
         _text = new TextView(_context)
         {
             DuplicateParentStateEnabled = true,
-            LayoutParameters = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WrapContent)
+            LayoutParameters = new LayoutParams(0, LayoutParams.WrapContent)
             {
                 Weight = 1
             },
@@ -78,7 +78,7 @@ internal class ContextMenuItemView : LinearLayout
 
         layout.AddView(_text);
 
-        var p = new LinearLayout.LayoutParams(ViewUtils.DpToPx(24), ViewUtils.DpToPx(24))
+        var p = new LayoutParams(ViewUtils.DpToPx(24), ViewUtils.DpToPx(24))
         {
             MarginStart = ViewUtils.DpToPx(16),
             Gravity = GravityFlags.Right,
@@ -92,7 +92,7 @@ internal class ContextMenuItemView : LinearLayout
 
         layout.AddView(_image);
 
-        AddView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent));
+        AddView(layout, new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent));
     }
     public override bool Enabled
     {
@@ -146,7 +146,7 @@ internal class ContextMenuItemView : LinearLayout
         if (isVisible)
         {
             Visibility = ViewStates.Visible;
-            LayoutParameters.Height = LinearLayout.LayoutParams.WrapContent;
+            LayoutParameters.Height = LayoutParams.WrapContent;
         }
         else
         {
@@ -173,8 +173,8 @@ internal class ContextMenuViewAdapter : RecyclerView.Adapter
         }
     }
 
-    Context _context;
-    MenuBuilder _menu;
+    private Context _context;
+    private MenuBuilder _menu;
 
     public event EventHandler ActionSelected;
     public event EventHandler<SubMenuSelectedEventArgs> SubMenuSelected;
@@ -187,7 +187,7 @@ internal class ContextMenuViewAdapter : RecyclerView.Adapter
         _menu = menu;
     }
 
-    Drawable GetDefaultSubMenuIconDrawable()
+    private Drawable GetDefaultSubMenuIconDrawable()
     {
         var id = _context.GetDrawableId("cm_android_submenu_icon.png");
         return id != 0 ? _context.GetDrawable(id) : null;
@@ -195,7 +195,7 @@ internal class ContextMenuViewAdapter : RecyclerView.Adapter
 
     public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        if (holder is ContextMenuViewAdapter.ViewHolder h && h.ItemView is ContextMenuItemView view)
+        if (holder is ViewHolder h && h.ItemView is ContextMenuItemView view)
         {
             var item = _menu.GetItem(position);
             view.SetIsVisible(item.IsVisible);
@@ -224,7 +224,7 @@ internal class ContextMenuViewAdapter : RecyclerView.Adapter
 
     public override void OnViewRecycled(Java.Lang.Object holder)
     {
-        if (holder is ContextMenuViewAdapter.ViewHolder h)
+        if (holder is ViewHolder h)
         {
             h.Clicked -= OnItemClicked;
         }
@@ -246,7 +246,7 @@ internal class ContextMenuViewAdapter : RecyclerView.Adapter
 
         if (itemImpl.HasSubMenu)
         {
-            if (sender is ContextMenuViewAdapter.ViewHolder holder)
+            if (sender is ViewHolder holder)
             {
                 var subMenu = (SubMenuBuilder)itemImpl.SubMenu;
                 SubMenuSelected?.Invoke(this, new SubMenuSelectedEventArgs(holder.ItemView, subMenu));
@@ -269,11 +269,11 @@ internal class ContextMenuViewAdapter : RecyclerView.Adapter
 
 internal class ContextMenuPopup : PopupWindow
 {
-    AView _anchor;
-    RecyclerView _recyclerView;
-    ContextMenuViewAdapter _adapter;
-    MenuBuilder _menu;
-    ContextMenuPopup? _parent;
+    private AView _anchor;
+    private RecyclerView _recyclerView;
+    private ContextMenuViewAdapter _adapter;
+    private MenuBuilder _menu;
+    private ContextMenuPopup? _parent;
 
     public ContextMenuPopup(AView anchor, SubMenuBuilder subMenu, ContextMenuPopup parent) : base(anchor.Context)
     {
@@ -299,12 +299,12 @@ internal class ContextMenuPopup : PopupWindow
         }
     }
 
-    bool IsDarkMode()
+    private bool IsDarkMode()
     {
         return ((int)_anchor.Context.Resources.Configuration.UiMode & (int)Android.Content.Res.UiMode.NightMask) == (int)Android.Content.Res.UiMode.NightYes;
     }
 
-    void Setup(AView anchor, MenuBuilder menu)
+    private void Setup(AView anchor, MenuBuilder menu)
     {
         _menu = menu;
         _anchor = anchor;
@@ -341,13 +341,13 @@ internal class ContextMenuPopup : PopupWindow
         _adapter.SubMenuSelected += OnSubMenuSelected;
     }
 
-    void OnSubMenuSelected(object sender, SubMenuSelectedEventArgs e)
+    private void OnSubMenuSelected(object sender, SubMenuSelectedEventArgs e)
     {
         var p = new ContextMenuPopup(e.View, e.Builder, this);
         p.Show(0, 0);
     }
 
-    void OnActionSelected(object sender, EventArgs e)
+    private void OnActionSelected(object sender, EventArgs e)
     {
         _parent?.Dismiss();
         Dismiss();

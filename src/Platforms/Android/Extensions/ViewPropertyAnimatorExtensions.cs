@@ -5,7 +5,7 @@ namespace The49.Maui.ContextMenu;
 
 internal class ViewPropertyAnimatorRunnable : Java.Lang.Object, IRunnable
 {
-    System.Action _action;
+    private System.Action _action;
     public ViewPropertyAnimatorRunnable(System.Action action)
     {
         _action = action;

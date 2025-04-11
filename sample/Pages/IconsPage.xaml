@@ -12,10 +12,10 @@
                     <DataTemplate>
                         <the49:Menu>
                             <the49:Action Title="Upload documents" Icon="dotnet_bot.png" />
-                            <the49:Group>
+                            <the49:MenuGroup>
                                 <the49:Action Title="Copy" Icon="dotnet_bot.png" />
                                 <the49:Action Title="Paste" IsEnabled="False" Icon="dotnet_bot.png" />
-                            </the49:Group>
+                            </the49:MenuGroup>
                             <the49:Action Title="Delete" IsDestructive="True" Icon="dotnet_bot.png" />
                         </the49:Menu>
                     </DataTemplate>
@@ -27,10 +27,10 @@
                     <DataTemplate>
                         <the49:Menu>
                             <the49:Action Title="Upload documents" SystemIcon="IcMenuAdd" />
-                            <the49:Group Title="Clipboard">
+                            <the49:MenuGroup Title="Clipboard">
                                 <the49:Action Title="Copy" SystemIcon="doc.on.clipboard" />
                                 <the49:Action Title="Paste" IsEnabled="False" SystemIcon="arrow.up.doc.on.clipboard" />
-                            </the49:Group>
+                            </the49:MenuGroup>
                             <the49:Action Title="Delete" IsDestructive="True" SystemIcon="trash" />
                         </the49:Menu>
                     </DataTemplate>

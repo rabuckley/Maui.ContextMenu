@@ -1,17 +1,19 @@
-﻿using Maui.BindableProperty.Generator.Core;
-using System.Collections.ObjectModel;
-
-namespace The49.Maui.ContextMenu;
+﻿namespace The49.Maui.ContextMenu;
 
 [ContentProperty(nameof(Children))]
 public partial class Menu : MenuElement
 {
-    [AutoBindable]
-    readonly ObservableCollection<MenuElement> children;
+    public static readonly BindableProperty ChildrenProperty = BindableProperty.Create(
+        nameof(Children),
+        typeof(IList<MenuElement>),
+        typeof(Menu),
+        defaultValue: new List<MenuElement>(),
+        defaultBindingMode: BindingMode.OneWay);
 
-    public Menu() : base()
+    public IList<MenuElement> Children
     {
-        Children = new ObservableCollection<MenuElement>();
+        get => (IList<MenuElement>)GetValue(ChildrenProperty);
+        set => SetValue(ChildrenProperty, value);
     }
 
     protected override void OnBindingContextChanged()

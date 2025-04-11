@@ -1,15 +1,13 @@
 ﻿using CoreGraphics;
 using Foundation;
 using Microsoft.Maui.Controls.Handlers.Items;
-using Microsoft.Maui.Graphics.Platform;
-using Microsoft.Maui.Platform;
 using UIKit;
 
 namespace The49.Maui.ContextMenu;
 
 public class CollectionViewDelegator : ReorderableItemsViewDelegator<ReorderableItemsView, CollectionViewController>
 {
-    NSIndexPath _highlightedIndexPath;
+    private NSIndexPath _highlightedIndexPath;
     public CollectionViewDelegator(ItemsViewLayout itemsViewLayout, CollectionViewController itemsViewController) : base(itemsViewLayout, itemsViewController) { }
 
     public override UITargetedPreview GetPreviewForHighlightingContextMenu(UICollectionView collectionView, UIContextMenuConfiguration configuration)
@@ -29,7 +27,7 @@ public class CollectionViewDelegator : ReorderableItemsViewDelegator<Reorderable
         return preview;
     }
 
-    UITargetedPreview MakeTargetedPreview(UICollectionView collectionView, UIContextMenuConfiguration configuration)
+    private UITargetedPreview MakeTargetedPreview(UICollectionView collectionView, UIContextMenuConfiguration configuration)
     {
         var item = ViewController.ItemsSource[_highlightedIndexPath];
         var cell = collectionView.CellForItem(_highlightedIndexPath);

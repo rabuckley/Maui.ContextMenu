@@ -18,10 +18,10 @@
                     <the49:Menu Title="{Binding Text}">
                         <the49:Action Title="{Binding Text}" />
                         <the49:Action Title="Upload documents" Icon="dotnet_bot.png" Command="{Binding NotifyCommand, Source={x:Reference this}}" />
-                        <the49:Group Title="{Binding Text}">
+                        <the49:MenuGroup Title="{Binding Text}">
                             <the49:Action Title="Start" Icon="dotnet_bot.png" Command="{Binding NotifyCommand, Source={x:Reference this}}" />
                             <the49:Action Title="Stop" Icon="dotnet_bot.png" IsEnabled="False" IsDestructive="True" Command="{Binding NotifyCommand, Source={x:Reference this}}" />
-                        </the49:Group>
+                        </the49:MenuGroup>
                         <the49:Menu Title="Clipboard">
                             <the49:Action Title="Copy" Command="{Binding NotifyCommand, Source={x:Reference this}}" Icon="dotnet_bot.png" />
                             <the49:Action Title="Paste" Command="{Binding NotifyCommand, Source={x:Reference this}}" Icon="dotnet_bot.png" />

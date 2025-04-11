@@ -1,6 +1,4 @@
-﻿using Android;
-using Android.Animation;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
@@ -9,7 +7,6 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.View;
 using Kotlin.Jvm.Functions;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Graphics.Platform;
 using Microsoft.Maui.Platform;
 using AView = Android.Views.View;
@@ -44,7 +41,7 @@ internal class ContextMenuBackgroundView : FrameLayout
         }
     }
 
-    void Dismiss()
+    private void Dismiss()
     {
         DismissEvent?.Invoke(this, EventArgs.Empty);
     }
@@ -59,10 +56,10 @@ internal class ContextMenuTemplatedPreview : ContextMenuPreview
 
 internal class CustomOutline : ViewOutlineProvider
 {
-    Context _context;
-    int _width;
-    int _height;
-    Preview? _preview;
+    private Context _context;
+    private int _width;
+    private int _height;
+    private Preview? _preview;
 
     public CustomOutline(Context context, int width, int height, Preview? preview)
     {
@@ -93,11 +90,11 @@ internal class CustomOutline : ViewOutlineProvider
 
 internal class ContextMenuPreview : FrameLayout
 {
-    Context _context;
-    Preview? _preview;
+    private Context _context;
+    private Preview? _preview;
     protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
     {
-        if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
         {
             OutlineProvider = new CustomOutline(_context, w, h, _preview);
         }
@@ -137,13 +134,13 @@ internal class ContextMenuWindow
     public const int ContextMenuSpacing = 16;
     public const int ContextMenuEdgeSpacing = 16;
 
-    Context _context;
-    IWindowManager _windowManager;
-    FrameLayout _decorView;
-    AView _parent;
-    AView _content;
-    ContextMenuBackgroundView _backgroundView;
-    ContextMenuPopup _menu;
+    private Context _context;
+    private IWindowManager _windowManager;
+    private FrameLayout _decorView;
+    private AView _parent;
+    private AView _content;
+    private ContextMenuBackgroundView _backgroundView;
+    private ContextMenuPopup _menu;
     private int _offsetX;
     private int _offsetY;
 
@@ -161,7 +158,7 @@ internal class ContextMenuWindow
         Setup(context, parent, preview);
     }
 
-    void Setup(Context context, AView parent, ContextMenuPreview content)
+    private void Setup(Context context, AView parent, ContextMenuPreview content)
     {
         _context = context;
         _parent = parent;
@@ -182,7 +179,7 @@ internal class ContextMenuWindow
 
     public IMenu Menu => _menu.Menu;
 
-    ContextMenuBackgroundView CreateBackgroundView()
+    private ContextMenuBackgroundView CreateBackgroundView()
     {
         var backgroundView = new ContextMenuBackgroundView(_context);
         backgroundView.DismissEvent += (s, e) =>
@@ -191,7 +188,8 @@ internal class ContextMenuWindow
         };
         return backgroundView;
     }
-    FrameLayout CreateDecorView(AView background, AView content)
+
+    private FrameLayout CreateDecorView(AView background, AView content)
     {
         var decorView = new FrameLayout(_context);
         decorView.AddView(background, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent));
@@ -199,7 +197,7 @@ internal class ContextMenuWindow
         return decorView;
     }
 
-    void Dismiss()
+    private void Dismiss()
     {
         var pos = new int[2];
         _parent.GetLocationInWindow(pos);
@@ -256,7 +254,7 @@ internal class ContextMenuWindow
         }));
     }
 
-    void ShowAfterLayout()
+    private void ShowAfterLayout()
     {
         _parent.ScaleX = 1f;
         _parent.ScaleY = 1f;
@@ -296,14 +294,14 @@ internal class ContextMenuWindow
             .SetDuration(ShowAnimationDuration)
             .WithEndAction(() =>
             {
-                _menu.Show(_offsetX, _offsetY + ViewUtils.DpToPx(ContextMenuWindow.ContextMenuSpacing));
+                _menu.Show(_offsetX, _offsetY + ViewUtils.DpToPx(ContextMenuSpacing));
             })
             .Start();
 
         AnimateBackgroundIn();
     }
 
-    void AnimateBackgroundIn()
+    private void AnimateBackgroundIn()
     {
         _backgroundView.Animate()
             .Alpha(1)
@@ -311,7 +309,7 @@ internal class ContextMenuWindow
             .Start();
     }
 
-    void AnimateBackgroundOut()
+    private void AnimateBackgroundOut()
     {
         _backgroundView.Animate()
             .Alpha(0)
@@ -319,7 +317,7 @@ internal class ContextMenuWindow
             .Start();
     }
 
-    void Update()
+    private void Update()
     {
         var pos = new int[2];
         _parent.GetLocationInWindow(pos);
@@ -334,7 +332,7 @@ internal class ContextMenuWindow
     }
 }
 
-class Function1Impl<T> : Java.Lang.Object, IFunction1 where T : Java.Lang.Object
+internal class Function1Impl<T> : Java.Lang.Object, IFunction1 where T : Java.Lang.Object
 {
     private readonly Action<T> OnInvoked;
 

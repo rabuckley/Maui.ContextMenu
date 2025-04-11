@@ -1,9 +1,16 @@
-﻿using Maui.BindableProperty.Generator.Core;
+﻿namespace The49.Maui.ContextMenu;
 
-namespace The49.Maui.ContextMenu;
-
-public partial class MenuElement : Element
+public abstract partial class MenuElement : Element
 {
-    [AutoBindable]
-    readonly string title;
+    public static readonly BindableProperty TitleProperty = BindableProperty.Create(
+        nameof(Title),
+        typeof(string),
+        typeof(MenuElement),
+        defaultBindingMode: BindingMode.OneWay);
+
+    public string Title
+    {
+        get => (string)GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
+    }
 }

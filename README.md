@@ -2,7 +2,7 @@
 
 ## What is Maui.ContextMenu?
 
-Maui.ContextMenu is a .NET MAUI library for Android and iOS used to open a native context menu on long press.
+Maui.ContextMenu is a .NET MAUI library for Android, iOS, and Windows used to open a native context menu on long press or right-click.
 
 Android        |  iOS
 :-------------------------:|:-------------------------:
@@ -66,32 +66,33 @@ The available elements for the menu are:
 
 The `<the49:Menu>` element supports the following parameters:
 
-| Property  | Type    | Description                                                    | iOS | Android |
-|-----------|---------|:--------------------------------------------------------------|---|-------|
-| `Title`   | `string`    |  A string title to be displayed at the top of the context menu | ✅ | ❌      |
+| Property  | Type    | Description                                                    | iOS | Android | Windows |
+|-----------|---------|:--------------------------------------------------------------|---|-------|--------|
+| `Title`   | `string`    |  A string title to be displayed at the top of the context menu | ✅ | ❌ | ✅ |
 
 The `<the49:Group>` element supports the following parameters:
 
-| Property  | Type    | Description                                                    | iOS | Android |
-|-----------|---------|:--------------------------------------------------------------|---|-------|
-| `Title`   | `string`    |  A string title to be displayed at the top of the group        | ✅ | ❌      |
+| Property  | Type    | Description                                                    | iOS | Android | Windows |
+|-----------|---------|:--------------------------------------------------------------|---|-------|--------|
+| `Title`   | `string`    |  A string title to be displayed at the top of the group        | ✅ | ❌ | ✅ |
 
 
 The `<the49:Action>` element supports the following parameters:
 
-| Property  | Type    | Description                                                    | iOS | Android |
-|-----------|---------|:--------------------------------------------------------------|---|-------|
-| `Title`   | `string`|  The text for the action        | ✅ | ✅      |
-| `Command`   | `ICommand`    |  A command to execute when the user selects this action        | ✅ | ✅      |
-| `CommandParameter`   | `object`    |  A parameter that will be passed to the `Command`        | ✅ | ✅      |
-| `Icon`   | `ImageSource`    |  An icon to be displayed next to the action text        | ✅ | ✅      |
-| `SystemIcon`   | `string`    |  A string reference to a system icon to use instead of the `Icon`        | ✅* | ❌**      |
-| `IsEnabled`   | `bool`    |  Enables/Disables the action in the menu        | ✅ |    ✅   |
-| `IsVisible`   | `bool`    |  Hides/Displays the action in the menu        | ✅ |    ✅   |
-| `IsDestructive`   | `bool`    |  Displays the action as destructive       | ✅ |    ✅   |
+| Property  | Type    | Description                                                    | iOS | Android | Windows |
+|-----------|---------|:--------------------------------------------------------------|---|-------|--------|
+| `Title`   | `string`|  The text for the action        | ✅ | ✅ | ✅ |
+| `Command`   | `ICommand`    |  A command to execute when the user selects this action        | ✅ | ✅ | ✅ |
+| `CommandParameter`   | `object`    |  A parameter that will be passed to the `Command`        | ✅ | ✅ | ✅ |
+| `Icon`   | `ImageSource`    |  An icon to be displayed next to the action text        | ✅ | ✅ | ✅*** |
+| `SystemIcon`   | `string`    |  A string reference to a system icon to use instead of the `Icon`        | ✅* | ❌** | ❌ |
+| `IsEnabled`   | `bool`    |  Enables/Disables the action in the menu        | ✅ | ✅ | ✅ |
+| `IsVisible`   | `bool`    |  Hides/Displays the action in the menu        | ✅ | ✅ | ✅ |
+| `IsDestructive`   | `bool`    |  Displays the action as destructive       | ✅ | ✅ | ✅ |
 
  - \* SystemIcons on iOS use the SFSymbols collection of icons: https://developer.apple.com/sf-symbols/
  - \*\* Android does not recommend using system icons in your apps
+ - \*\*\* Windows implementation uses a basic icon, full icon support would require additional customization
 
 Here is what a more complex menu would look like using most properties available:
 
@@ -114,14 +115,15 @@ Here is what a more complex menu would look like using most properties available
 
 When an item is selected for its context menu to open, a highlighted preview can be displayed. This preview by default is a snapshot of the view itself. This can be customised using the `Preview` property.
 
-| Property  | Type    | Description                                                    | iOS | Android |
-|-----------|---------|:--------------------------------------------------------------|---|-------|
-| `PreviewTemplate`   | `DataTemplate`    |  Provide a different view to render the preview        | ✅ | ✅      |
-| `VisiblePath`   | `IShape`|  Customise the path used to clip the preview        | ✅* | ✅      |
-| `BackgroundColor`   | `Color`    |  The background color for the hightlight preview        | ✅ | ✅      |
-| `Padding`   | `Thickness`    |  The padding of the VisiblePath within the highlight preview        | ✅ | ✅      |
+| Property  | Type    | Description                                                    | iOS | Android | Windows |
+|-----------|---------|:--------------------------------------------------------------|---|-------|--------|
+| `PreviewTemplate`   | `DataTemplate`    |  Provide a different view to render the preview        | ✅ | ✅ | ❌ |
+| `VisiblePath`   | `IShape`|  Customise the path used to clip the preview        | ✅* | ✅ | ❌ |
+| `BackgroundColor`   | `Color`    |  The background color for the hightlight preview        | ✅ | ✅ | ❌ |
+| `Padding`   | `Thickness`    |  The padding of the VisiblePath within the highlight preview        | ✅ | ✅ | ❌ |
 
  - \* By default the Visible path on iOS has a corner radius set
+ - Windows does not support preview customization as it uses the standard WinUI flyout without preview
 
 Example:
 
@@ -161,7 +163,9 @@ Because of how context menus ar attached to view on each different platforms, th
 
 Sometimes you want to show the context menu on a click instead of the default long press/right click. Setting `ShowMenuOnClick` to true will simply do that. The highlight preview will however not be shown in this mode.
 
-On iOS it is not possible to open a context menu on click. This plugin uses the UIKit `showsMenuAsPrimaryAction` property to support this feature. This is however only supported on UIKit.UIbutton, meaning `ShowMenuOnClick` will only work on `Button` on iOS
+On iOS it is not possible to open a context menu on click. This plugin uses the UIKit `showsMenuAsPrimaryAction` property to support this feature. This is however only supported on UIKit.UIbutton, meaning `ShowMenuOnClick` will only work on `Button` on iOS.
+
+On Windows, when `ShowMenuOnClick` is true, the context menu will appear on left-click instead of the default right-click behavior.
 
 ### TableView, ListView, CollectionView
 
@@ -218,14 +222,13 @@ You can configure the context menu for these items like so:
 
 ## Implementation details
 
-This plugins aims to use the underlying platform's features as much as possible, however when needed the platform was extended to offer the best user experience.
+This plugin aims to use the underlying platform's features as much as possible, however when needed the platform was extended to offer the best user experience.
 
 ### iOS
 
 iOS provides a native and comprehensive context menu feature. This was used to support this plugin.
 
-The [UIContextMenuInteraction](https://developer.apple.com/documentation/uikit/uicontextmenuinteraction) was used to support standalone controls. For items views, [contextMenuConfigurationForItemsAt](https://developer.apple.com/documentation/uikit/uicollectionviewdelegate/4002186-collectionview) or an equivalent method was used
-
+The [UIContextMenuInteraction](https://developer.apple.com/documentation/uikit/uicontextmenuinteraction) was used to support standalone controls. For items views, [contextMenuConfigurationForItemsAt](https://developer.apple.com/documentation/uikit/uicollectionviewdelegate/4002186-collectionview) or an equivalent method was used.
 
 ### Android
 
@@ -234,6 +237,12 @@ Android offers a native context menu API. However this API basically just opens 
 This plugin implements a more complete context menu experience by adding a highlighted preview and multiple other features to match the featureset provided by iOS.
 
 A [MenuBuilder](https://developer.android.com/reference/android/view/Menu) is still used to conform the custom implementation to all other Android menus.
+
+### Windows
+
+Windows uses WinUI's native [MenuFlyout](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.menuflyout) control to display context menus. This provides a familiar right-click experience for Windows users.
+
+The implementation handles both right-click and long press (via pointer events) depending on the configured trigger mode. It also supports hierarchical menus, separators for groups, and destructive action styling.
 
 ## TODO:
 

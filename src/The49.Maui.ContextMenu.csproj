@@ -21,7 +21,7 @@
 
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<Title>.NET Maui ContextMenu</Title>
-		<Description>.NET MAUI library for Android and iOS to open a native context menu on long press.</Description>
+		<Description>.NET MAUI library for Android, iOS, and Windows to open a native context menu on long press.</Description>
 		<PackageProjectUrl>https://github.com/the49code/The49.Maui.ContextMenu</PackageProjectUrl>
 		<PackageIcon>The49.Maui.ContextMenu.Logo.png</PackageIcon>
 		<PackageReadmeFile>NUGET-README.md</PackageReadmeFile>
